@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 /// VKTeams CLI - Interacts with VK Teams API
 #[derive(Parser, Clone, Debug)]
-#[command(author="Andrei G.", version="0.1.0", about="vkteams-bot-cli tool", long_about = None)]
+#[command(author="Andrei G.", version="0.1.1", about="vkteams-bot-cli tool", long_about = None)]
 pub struct Opts {
     #[command(subcommand)]
     pub subcmd: SubCommand,
@@ -9,25 +9,23 @@ pub struct Opts {
 /// Subcommands for VKTeams CLI
 #[derive(Subcommand, Debug, Clone)]
 pub enum SubCommand {
-    /// ## Example
-    /// ```bash
-    /// vkteams-bot-cli send-text --user-id text@example --message "Hello"
-    /// ```
+    /// Send text message text <MESSAGE> to user with <USER_ID>
     SendText {
         #[arg(short, long, required = true, value_name = "USER_ID")]
         user_id: String,
         #[arg(short, long, required = true, value_name = "MESSAGE")]
         message: String,
     },
-    /// ## Example
-    /// ```bash
-    /// vkteams-bot-cli send-file --user-id text@example.com --file-path ./file.txt
-    /// ```
+    /// Send file from <FILE_PATH> to user with <USER_ID>
     SendFile {
         #[arg(short, long, required = true, value_name = "USER_ID")]
         user_id: String,
         #[arg(short, long, required = true, value_name = "FILE_PATH")]
         file_path: String,
     },
-    GetEvents,
+    /// Get events once or listen with optional <LISTEN> flag
+    GetEvents {
+        #[arg(short, long, required = false, value_name = "LISTEN")]
+        listen: Option<bool>,
+    },
 }
