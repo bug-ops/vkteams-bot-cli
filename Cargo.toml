@@ -1,6 +1,6 @@
 [package]
 name = "vkteams-bot-cli"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["Andrei G. <k05h31@gmail.com>"]
 description = "VK Teams Bot API CLI"
