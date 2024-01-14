@@ -4,7 +4,7 @@ use anyhow::Result;
 use clap::Parser;
 use colored::Colorize;
 use core::default::Default;
-use vkteams_bot::types::*;
+use vkteams_bot::api::types::*;
 /// VKTeams CLI - Interacts with VK Teams API
 pub struct Cli {
     /// bot instance
@@ -29,14 +29,13 @@ impl Cli {
         match self.matches.clone().subcmd {
             // Subcommand for send text message
             SubCommand::SendText { user_id, message } => {
+                let parser = MessageTextParser::default()
+                    .add(MessageTextFormat::Plain(message))
+                    .to_owned();
                 match_result(
                     &self
                         .bot
-                        .messages_send_text(
-                            RequestMessagesSendText::new(ChatId(user_id))
-                                .set_text((message, ParseMode::HTML))
-                                .build(),
-                        )
+                        .messages_send_text(ChatId(user_id), Some(parser), None, None, None, None)
                         .await,
                 );
             }
@@ -46,8 +45,13 @@ impl Cli {
                     &self
                         .bot
                         .messages_send_file(
-                            RequestMessagesSendFile::new(ChatId(user_id)),
+                            ChatId(user_id),
                             file_path,
+                            None,
+                            None,
+                            None,
+                            None,
+                            None,
                         )
                         .await,
                 );
@@ -59,7 +63,7 @@ impl Cli {
                         self.bot.event_listener(match_result).await;
                     }
                     _ => {
-                        match_result(&self.bot.get_events().await);
+                        match_result(&self.bot.events_get().await);
                     }
                 };
             }
