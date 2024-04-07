@@ -1,6 +1,6 @@
-/target
-/tests
-/.env
+target
+tests
+.env
 .devcontainer
 .vscode
 .idea

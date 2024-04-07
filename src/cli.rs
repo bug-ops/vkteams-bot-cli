@@ -3,7 +3,6 @@ use crate::cli::types::*;
 use anyhow::Result;
 use clap::Parser;
 use colored::Colorize;
-use core::default::Default;
 use vkteams_bot::api::types::*;
 /// VKTeams CLI - Interacts with VK Teams API
 pub struct Cli {

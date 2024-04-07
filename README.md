@@ -26,11 +26,6 @@ $ set VKTEAMS_PROXY=<Proxy> #optional
 
 $ cargo install vkteams-bot-cli
 ```
-3. Put lines in you `Cargo.toml` file
-```toml
-[dependencies]
-vkteams_bot_cli = "0.2"
-```
 
 ## Usage
 

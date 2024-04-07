@@ -1,6 +1,6 @@
 [package]
 name = "vkteams-bot-cli"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Andrei G. <k05h31@gmail.com>"]
 description = "VK Teams Bot API CLI"
@@ -9,10 +9,9 @@ repository = "https://github.com/k05h31/vkteams-bot-cli/tree/master"
 readme = "README.md"
 keywords = ["vk", "teams", "bot", "cli"]
 categories = ["asynchronous", "api-bindings", "web-programming::http-client"]
-# build = "build.rs"
 
 [dependencies]
-clap = { version = "4.4", features = [
+clap = { version = "4.5", features = [
     "derive",
     'std',
     'color',
@@ -21,16 +20,13 @@ clap = { version = "4.4", features = [
     'cargo',
 ] }
 vkteams-bot = "0.3"
-anyhow = "1.0"
-tokio = { version = "1.35", features = ["full"] }
+anyhow = "1"
+tokio = { version = "1", features = ["full"] }
 log = "0.4"
 dotenvy = "0.15"
 pretty_env_logger = "0.5"
-serde_json = "1.0"
+serde_json = "1"
 serde_yaml = "0.9"
-colored = "2.1"
-serde = "1.0"
-exitcode = "1.1"
-
-[build-dependencies]
-clap_complete = "4.4"
+colored = "2"
+serde = "1"
+exitcode = "1"
