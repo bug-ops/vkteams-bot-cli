@@ -1,3 +1,15 @@
+<div>
+<a href="https://docs.rs/vkteams-bot-cli/latest/vkteams_bot/">
+    <img src="https://img.shields.io/docsrs/vkteams-bot-cli/latest">
+</a>
+<a href="https://crates.io/crates/vkteams-bot-cli">
+    <img src="https://img.shields.io/crates/v/vkteams-xbot-cli">
+</a>
+ <a href="https://github.com/k05h31/vkteams-bot-cli/actions">
+    <img src="https://github.com/k05h31/vkteams-bot-cli/workflows/Rust/badge.svg">
+</a>
+</div>
+
 # VK Teams Bot API Cli
 
 VK Teams Bot API terminal application.
