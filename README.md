@@ -1,5 +1,5 @@
 <div>
-<a href="https://docs.rs/vkteams-bot-cli/latest/vkteams_bot/">
+<a href="https://docs.rs/vkteams-bot-cli/latest/vkteams_bot_cli/">
     <img src="https://img.shields.io/docsrs/vkteams-bot-cli/latest">
 </a>
 <a href="https://crates.io/crates/vkteams-bot-cli">
@@ -51,3 +51,10 @@ $ vkteams-bot-cli send-text -u "<USER_ID>" -m "text message"
 # Send file
 $ vkteams-bot-cli send-file -u "<USER_ID>" -f <FILE_PATH>
 ```
+
+## Commands
+| Command | Description |
+|---------|-------------|
+| `get-events` | Listen for events |
+| `send-text` | Send text message |
+| `send-file` | Send file |

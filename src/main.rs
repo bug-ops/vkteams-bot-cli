@@ -1,4 +1,8 @@
-use vkteams_bot_cli::cli::Cli;
+#[macro_use]
+extern crate log;
+
+pub mod cli;
+use cli::Cli;
 
 #[tokio::main]
 async fn main() {
