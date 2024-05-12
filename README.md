@@ -25,14 +25,14 @@ VK Teams Bot API terminal application.
 2. Set environment variables or save in `.env` file
 ```bash
 # Unix-like
-$ export VKTEAMS_VKTEAMS_BOT_API_TOKEN=<Your token here> #require
+$ export VKTEAMS_BOT_API_TOKEN=<Your token here> #require
 $ export VKTEAMS_BOT_API_URL=<Your base api url> #require
 $ export VKTEAMS_PROXY=<Proxy> #optional
 
 $ cargo install vkteams-bot-cli
 
 # Windows
-$ set VKTEAMS_VKTEAMS_BOT_API_TOKEN=<Your token here> #require
+$ set VKTEAMS_BOT_API_TOKEN=<Your token here> #require
 $ set VKTEAMS_BOT_API_URL=<Your base api url> #require
 $ set VKTEAMS_PROXY=<Proxy> #optional
 
