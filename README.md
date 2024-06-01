@@ -36,6 +36,7 @@ $ set VKTEAMS_BOT_API_TOKEN=<Your token here> #require
 $ set VKTEAMS_BOT_API_URL=<Your base api url> #require
 $ set VKTEAMS_PROXY=<Proxy> #optional
 
+# Build from source
 $ cargo install vkteams-bot-cli
 ```
 
@@ -47,9 +48,11 @@ $ vkteams-bot-cli --help
 # Listen for events
 $ vkteams-bot-cli get-events -l true | grep "ALARM"
 # Send text
-$ vkteams-bot-cli send-text -u "<USER_ID>" -m "text message"
+$ vkteams-bot-cli send-text -u <USER_ID> -m "text message"
 # Send file
-$ vkteams-bot-cli send-file -u "<USER_ID>" -f <FILE_PATH>
+$ vkteams-bot-cli send-file -u <USER_ID> -f <FILE_PATH>
+# Download file
+$ vkteams-bot-cli get-file -i <FILE_ID> -f <FILE_PATH>
 ```
 
 ## Commands
@@ -57,4 +60,5 @@ $ vkteams-bot-cli send-file -u "<USER_ID>" -f <FILE_PATH>
 |---------|-------------|
 | `get-events` | Listen for events |
 | `send-text` | Send text message |
-| `send-file` | Send file |
+| `send-file` | Send file to chat |
+| `get-file`  | Download file from API |

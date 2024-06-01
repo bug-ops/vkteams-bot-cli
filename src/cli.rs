@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand};
 use colored::Colorize;
+use reqwest::Client;
+use std::path::PathBuf;
 use vkteams_bot::api::types::*;
 /// VKTeams CLI - Interacts with VK Teams API
 pub struct Cli {
@@ -41,6 +43,13 @@ pub enum SubCommand {
         #[arg(short, long, required = true, value_name = "FILE_PATH")]
         file_path: String,
     },
+    /// Download file with <FILE_ID> into <FILE_PATH>
+    GetFile {
+        #[arg(short = 'f', long, required = true, value_name = "FILE_ID")]
+        file_id: String,
+        #[arg(short = 'p', long, required = true, value_name = "FILE_PATH")]
+        file_path: String,
+    },
     /// Get events once or listen with optional <LISTEN> flag
     GetEvents {
         #[arg(short, long, required = false, value_name = "LISTEN")]
@@ -80,7 +89,7 @@ impl Cli {
                     Ok(r) => match_result(self.bot.clone(), r).await,
                     Err(e) => {
                         error!("ERROR messages/sendFile: {}", e);
-                        println!("{}", e.to_string().red());
+                        println!("API messages/sendFile: {}", e.to_string().red());
                     }
                 };
             }
@@ -96,9 +105,46 @@ impl Cli {
                         }
                         Err(e) => {
                             error!("ERROR events/get: {}", e);
-                            println!("{}", e.to_string().red());
+                            println!("API events/get: {}", e.to_string().red());
                         }
                     },
+                };
+            }
+            // Subcommand for get file from id
+            SubCommand::GetFile { file_id, file_path } => {
+                let id = FileId(file_id);
+                match self.bot.files_get_info(id).await {
+                    // Download file data
+                    Ok(file_info) => {
+                        if !file_info.ok {
+                            error!("Error: {}", file_info.description.to_owned().unwrap());
+                            println!(
+                                "API files/getInfo: {}",
+                                file_info.description.unwrap().red()
+                            );
+                            return;
+                        }
+                        // file_info.
+                        match file_info.download(Client::new()).await {
+                            // Save file to the disk
+                            Ok(file_data) => {
+                                file_save(
+                                    &file_info.file_name.to_owned().unwrap(),
+                                    &file_path,
+                                    file_data,
+                                )
+                                .await
+                            }
+                            Err(e) => {
+                                error!("Error: {}", e);
+                                println!("Error while download: {}", e.to_string().red());
+                            }
+                        }
+                    }
+                    Err(e) => {
+                        error!("Error: {}", e);
+                        println!("API files/getInfo: {}", e.to_string().red());
+                    }
                 };
             }
         }
@@ -111,4 +157,21 @@ where
     T: serde::Serialize,
 {
     println!("{}", serde_json::to_string(&result).unwrap().green());
+}
+/// Save file on disk
+pub async fn file_save(file_name: &str, path: &str, file_data: Vec<u8>) {
+    let mut file_path = PathBuf::from(path);
+    file_path.push(file_name);
+    match tokio::fs::write(&file_path, file_data).await {
+        Ok(_) => {
+            println!(
+                "File saved to: `{}`",
+                file_path.display().to_string().green()
+            );
+        }
+        Err(e) => {
+            error!("Error: {}", e);
+            println!("File not saved: {}", e.to_string().red());
+        }
+    }
 }
