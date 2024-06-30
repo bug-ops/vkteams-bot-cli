@@ -21,7 +21,7 @@ impl Default for Cli {
 }
 /// VKTeams CLI - Interacts with VK Teams API
 #[derive(Parser, Clone, Debug)]
-#[command(author="Andrei G.", version="0.1.1", about="vkteams-bot-cli tool", long_about = None)]
+#[command(author="Andrei G.", version="0.5.2", about="vkteams-bot-cli tool", long_about = None)]
 pub struct Opts {
     #[command(subcommand)]
     pub subcmd: SubCommand,
@@ -69,7 +69,9 @@ impl Cli {
                     .to_owned();
                 match self
                     .bot
-                    .messages_send_text(ChatId(user_id), Some(parser), None, None, None, None)
+                    .send_api_request(
+                        RequestMessagesSendText::new(ChatId(user_id)).set_text(parser),
+                    )
                     .await
                 {
                     Ok(r) => match_result(self.bot.clone(), r).await,
@@ -83,7 +85,10 @@ impl Cli {
             SubCommand::SendFile { user_id, file_path } => {
                 match self
                     .bot
-                    .messages_send_file(ChatId(user_id), file_path, None, None, None, None, None)
+                    .send_api_request(RequestMessagesSendFile::new(
+                        ChatId(user_id),
+                        MultipartName::File(file_path),
+                    ))
                     .await
                 {
                     Ok(r) => match_result(self.bot.clone(), r).await,
@@ -99,7 +104,11 @@ impl Cli {
                     Some(true) => {
                         self.bot.event_listener(match_result).await;
                     }
-                    _ => match self.bot.events_get().await {
+                    _ => match self
+                        .bot
+                        .send_api_request(RequestEventsGet::new(self.bot.get_last_event_id()))
+                        .await
+                    {
                         Ok(events) => {
                             match_result(self.bot.clone(), events).await;
                         }
@@ -113,27 +122,24 @@ impl Cli {
             // Subcommand for get file from id
             SubCommand::GetFile { file_id, file_path } => {
                 let id = FileId(file_id);
-                match self.bot.files_get_info(id).await {
+                match self
+                    .bot
+                    .send_api_request(RequestFilesGetInfo::new(id))
+                    .await
+                {
                     // Download file data
                     Ok(file_info) => {
                         if !file_info.ok {
-                            error!("Error: {}", file_info.description.to_owned().unwrap());
-                            println!(
-                                "API files/getInfo: {}",
-                                file_info.description.unwrap().red()
-                            );
+                            error!("Error: {}", file_info.description.to_owned());
+                            println!("API files/getInfo: {}", file_info.description.red());
                             return;
                         }
                         // file_info.
                         match file_info.download(Client::new()).await {
                             // Save file to the disk
                             Ok(file_data) => {
-                                file_save(
-                                    &file_info.file_name.to_owned().unwrap(),
-                                    &file_path,
-                                    file_data,
-                                )
-                                .await
+                                file_save(&file_info.file_name.to_owned(), &file_path, file_data)
+                                    .await
                             }
                             Err(e) => {
                                 error!("Error: {}", e);
