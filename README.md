@@ -58,7 +58,7 @@ $ vkteams-bot-cli get-file -i <FILE_ID> -f <FILE_PATH>
 ## Commands
 | Command | Description |
 |---------|-------------|
-| `get-events` | Listen for events |
+| `get-events` | Listen for events (long polling) |
 | `send-text` | Send text message |
 | `send-file` | Send file to chat |
 | `get-file`  | Download file from API |

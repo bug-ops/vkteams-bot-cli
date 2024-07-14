@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use colored::Colorize;
 use reqwest::Client;
 use std::path::PathBuf;
-use vkteams_bot::api::types::*;
+use vkteams_bot::prelude::*;
 /// VKTeams CLI - Interacts with VK Teams API
 pub struct Cli {
     /// bot instance
